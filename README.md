@@ -201,7 +201,6 @@ options {
 #### named.conf.local
 
 Edit the "named.conf.local" file:
-
 ```shell
 sudo nano /etc/bind/named.conf.local
 ```
