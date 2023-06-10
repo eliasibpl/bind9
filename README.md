@@ -206,6 +206,7 @@ sudo nano /etc/bind/named.conf.local
 ```
 
 Add the following configurations:
+
 Primary Zone
 ```shell
 zone "dns.eibanez.cf" {
