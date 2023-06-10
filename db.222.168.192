@@ -1,0 +1,20 @@
+;
+; BIND reverse data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     ns1.dns.eibanez.cf. admin.dns.eibanez.cf. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+; name servers - NS records
+    IN      NS      ns1.dns.eibanez.cf.
+    IN      NS      ns2.dns.eibanez.cf.
+
+; PTR Records
+16   IN      PTR     ns1.dns.eibanez.cf.  ; 192.168.222.16
+17   IN      PTR     ns2.dns.eibanez.cf.  ; 192.168.222.17
+20   IN      PTR     dnsclient1.dns.eibanez.cf.  ; 192.168.222.20
+21   IN      PTR     dnsclient2.dns.eibanez.cf.  ; 192.168.222.21
