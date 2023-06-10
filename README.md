@@ -7,6 +7,8 @@ To begin the installation process, open the terminal and execute the following c
 sudo apt update
 sudo apt install bind9 bind9utils bind9-doc
 ```
+
+# Configuration
 #### named.conf.options
 
 Create a new ACL named "trusted" above the "options" section:
@@ -66,7 +68,7 @@ zone "222.168.192.in-addr.arpa" {
 
 ```
 
-#### Zone Files
+### Zone Files
 
 #### /etc/bind/zones Directory
 
