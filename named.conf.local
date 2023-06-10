@@ -1,0 +1,18 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+zone "dns.eibanez.cf" {
+    type primary;
+    file "/etc/bind/zones/db.dns.eibanez.cf";    # zone file path
+    allow-transfer { 192.168.222.17; };          # ns2 private IP address - secondary
+};
+
+zone "222.168.192.in-addr.arpa" {
+    type primary;
+    file "/etc/bind/zones/db.222.168.192";      # 192.168.222.0/24 subnet
+    allow-transfer { 192.168.222.17; };         # ns2 private IP address - secondary
+};
