@@ -260,15 +260,22 @@ sudo nano /etc/netplan/00-installer-config.yaml
 
 With the following data
 ```shell
+# This is the network config written by 'subiquity'
 network:
-  version: 2
   ethernets:
-    ens32:                                    # Private network interface
+    ens32:
+      dhcp4: false
+      addresses:
+        - 192.168.222.20/24
       nameservers:
         addresses:
-          - 192.168.222.16                     # Private IP for ns1
-          - 192.168.222.17                     # Private IP for ns2
-      search: [ dns.eibanez.cf ]               # DNS zone
+          - 192.168.222.16
+          - 192.168.222.17
+        search: [ dns.eibanez.cf ]
+      routes:
+        - to: default
+          via: 192.168.222.2
+  version: 2
 ```
 
 Test the configuration:
