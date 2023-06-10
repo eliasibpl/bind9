@@ -38,3 +38,123 @@ options {
     . . .
 };
 ```
+
+#### named.conf.local
+
+Edit the "named.conf.local" file:
+
+```shell
+sudo nano /etc/bind/named.conf.local
+```
+
+Primary Zone
+```shell
+zone "dns.eibanez.cf" {
+    type primary;
+    file "/etc/bind/zones/db.dns.eibanez.cf";    # zone file path
+    allow-transfer { 192.168.222.17; };           # ns2 private IP address - secondary
+};
+```
+
+Reverse Zone
+```shell
+zone "222.168.192.in-addr.arpa" {
+    type primary;
+    file "/etc/bind/zones/db.222.168.192";       # 192.168.222.0/24 subnet
+    allow-transfer { 192.168.222.17; };           # ns2 private IP address - secondary
+};
+
+```
+
+#### Zone Files
+
+#### /etc/bind/zones Directory
+
+Create the directory:
+
+```shell
+sudo mkdir /etc/bind/zones
+```
+Forward Zone File
+Copy the local file to the zone directory:
+```shell
+sudo cp /etc/bind/db.local /etc/bind/zones/db.dns.eibanez.cf
+```
+Edit the zone file:
+```shell
+sudo nano /etc/bind/zones/db.dns.eibanez.cf
+```
+Define the Start of Authority (SOA) using the FQDN of your primary DNS server (ns1). Increment the serial value +1:
+```shell
+;
+$TTL    604800
+@       IN      SOA     ns1.dns.eibanez.cf. admin.dns.eibanez.cf. (
+                              3         ; Serial
+```
+Specify the NS records that point to your primary and secondary DNS servers:
+```shell
+; name servers - NS records
+IN      NS      ns1.dns.eibanez.cf.
+IN      NS      ns2.dns.eibanez.cf.
+```
+Add the A records for your DNS servers and clients:
+```shell
+; name servers - A records
+ns1.dns.eibanez.cf.     IN      A       192.168.222.16
+ns2.dns.eibanez.cf.     IN      A       192.168.222.17
+
+; 192.168.222.0/24 - A records
+dnsclient1.dns.eibanez.cf.        IN      A      192.168.222.20
+dnsclient2.dnz.eibanez.cf.        IN      A      192.168.222.21
+```
+
+#### Reverse Zone File
+
+Copy the example file to create the reverse zone:
+
+```shell
+sudo cp /etc/bind/db.127 /etc/bind/zones/db.222.168.192
+```
+Edit the reverse zone file:
+```shell
+sudo nano /etc/bind/zones/db.222.168.192
+```
+Increment the serial value in the SOA record:
+```shell
+@       IN      SOA     ns1.dns.eibanez.cf. admin.dns.eibanez.cf. (
+                              3         ; Serial
+```
+Add the NS records for your DNS servers:
+```shell
+; name servers - NS records
+IN      NS      ns1.dns.eibanez.cf.
+IN      NS      ns2.dns.eibanez.cf.
+```
+Add the PTR records for the IP addresses in your zone (192.168.222.0/24):
+```shell
+; PTR Records
+16      IN      PTR     ns1.dns.eibanez.cf.          ; 192.168.222.16
+17      IN      PTR     ns2.dns.eibanez.cf.          ; 192.168.222.17
+20      IN      PTR     dnsclient1.dns.eibanez.cf.   ; 192.168.222.20
+21      IN      PTR     dnsclient2.dns.eibanez.cf.   ; 192.168.222.21
+```
+
+### Final Configuration
+
+To ensure the configuration files are correct, run the following commands:
+
+```shell
+sudo named-checkconf
+sudo named-checkzone dns.eibanez.cf /etc/bind/zones/db.dns.eibanez.cf
+sudo named-checkzone 222.168.192.in-addr.arpa /etc/bind/zones/db.222.168.192
+```
+Restart the BIND service:
+
+```shell
+sudo systemctl restart bind9
+```
+
+Allow Bind9 through UFW Firewall:
+```shell
+sudo ufw allow Bind9
+```
