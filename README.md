@@ -243,7 +243,7 @@ Allow Bind9 through UFW Firewall:
 sudo ufw allow Bind9
 ```
 
-### Client Configuration
+# Client Configuration
 
 Show IP addresses for the subnet 192.168.222.0/24:
 
@@ -263,7 +263,7 @@ With the following data
 network:
   version: 2
   ethernets:
-    eth1:                                    # Private network interface
+    ens32:                                    # Private network interface
       nameservers:
         addresses:
           - 192.168.222.16                     # Private IP for ns1
