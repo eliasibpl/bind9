@@ -6,7 +6,7 @@ To begin the installation process, open the terminal and execute the following c
 ```shell
 sudo apt update
 sudo apt install bind9 bind9utils bind9-doc
-
+```
 #### named.conf.options
 
 Create a new ACL named "trusted" above the "options" section:
