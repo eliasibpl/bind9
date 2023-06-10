@@ -117,21 +117,25 @@ Copy the example file to create the reverse zone:
 ```shell
 sudo cp /etc/bind/db.127 /etc/bind/zones/db.222.168.192
 ```
+
 Edit the reverse zone file:
 ```shell
 sudo nano /etc/bind/zones/db.222.168.192
 ```
+
 Increment the serial value in the SOA record:
 ```shell
 @       IN      SOA     ns1.dns.eibanez.cf. admin.dns.eibanez.cf. (
                               3         ; Serial
 ```
+
 Add the NS records for your DNS servers:
 ```shell
 ; name servers - NS records
 IN      NS      ns1.dns.eibanez.cf.
 IN      NS      ns2.dns.eibanez.cf.
 ```
+
 Add the PTR records for the IP addresses in your zone (192.168.222.0/24):
 ```shell
 ; PTR Records
@@ -170,6 +174,7 @@ Edit the "named.conf.options" file:
 ```shell
 sudo nano /etc/bind/named.conf.options
 ```
+
 Add the "trusted" ACL definition:
 ```shell
 acl "trusted" {
@@ -190,10 +195,9 @@ options {
         8.8.8.8;
         8.8.4.4;
     };
-
-    . . .
 };
 ```
+
 #### named.conf.local
 
 Edit the "named.conf.local" file:
@@ -201,6 +205,7 @@ Edit the "named.conf.local" file:
 ```shell
 sudo nano /etc/bind/named.conf.local
 ```
+
 Add the following configurations:
 Primary Zone
 ```shell
@@ -210,8 +215,9 @@ zone "dns.eibanez.cf" {
     masters { 192.168.222.16; };
 };
 ```
+
 Reverse Zone
-``shell
+```shell
 zone "222.168.192.in-addr.arpa" {
     type slave;
     file "db.222.168.192";
@@ -221,14 +227,13 @@ zone "222.168.192.in-addr.arpa" {
 #### Final Configuration
 
 To ensure the configuration files are correct, run the following commands:
-
 ```shell
 sudo named-checkconf
 sudo named-checkzone dns.eibanez.cf /etc/bind/db.dns.eibanez.cf
 sudo named-checkzone 222.168.192.in-addr.arpa /etc/bind/db.222.168.192
 ```
-Restart the BIND service:
 
+Restart the BIND service:
 ```shell
 sudo systemctl restart bind9
 ```
