@@ -13,6 +13,7 @@ Create a new ACL named "trusted" above the "options" section:
 
 ```shell
 sudo nano /etc/bind/named.conf.options
+```
 
 ```shell
 acl "trusted" {
@@ -36,3 +37,4 @@ options {
 
     . . .
 };
+```
