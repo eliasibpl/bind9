@@ -107,7 +107,7 @@ ns2.dns.eibanez.cf.     IN      A       192.168.222.17
 
 ; 192.168.222.0/24 - A records
 dnsclient1.dns.eibanez.cf.        IN      A      192.168.222.20
-dnsclient2.dnz.eibanez.cf.        IN      A      192.168.222.21
+dnsclient2.dns.eibanez.cf.        IN      A      192.168.222.21
 ```
 
 #### Reverse Zone File
